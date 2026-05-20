@@ -1,1 +1,7 @@
 streamlit
+# Thư viện để thêm nút Micro vào giao diện
+streamlit-mic-recorder
+# Thư viện để thực hiện chuyển giọng nói thành văn bản
+SpeechRecognition
+# Thư viện phụ để xử lý dữ liệu âm thanh
+pydub
