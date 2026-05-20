@@ -2,10 +2,11 @@ import streamlit as st
 import os
 from PIL import Image
 
-# Cấu hình giao diện trên điện thoại
-st.set_page_config(page_title="Tra cứu Ảnh Sản Phẩm", page_icon="👗", layout="centered")
+# Cấu hình giao diện trên điện thoại (Đã đổi icon áo thun và tên tab)
+st.set_page_config(page_title="Tra cứu Ảnh Phong Boutique", page_icon="👕", layout="centered")
 
-st.title("👗 Tìm Kiếm Ảnh Thời Trang")
+# Đổi tiêu đề chính của app
+st.title("👕 Tìm Kiếm Ảnh Thời Trang Phong Boutique")
 
 # Markdown hướng dẫn người dùng bấm vào micro trên bàn phím
 st.markdown("Nhập tên sản phẩm hoặc **bấm biểu tượng Micro trên bàn phím điện thoại** để nói.")
