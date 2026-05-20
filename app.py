@@ -19,13 +19,12 @@ st.markdown("Bấm nút 'Bấm để nói' bên dưới, nói tên sản phẩm 
 # Biến để lưu kết quả giọng nói
 spoken_text = ""
 
-# Tạo nút Micro. Ngôn ngữ được cố định là vi-VN (Tiếng Việt)
+# Tạo nút Micro. Đã xóa tham số 'language' gây lỗi.
 audio = mic_recorder(
     start_prompt="👉 Bấm để nói",
     stop_prompt="⏹️ Bấm để dừng",
     key='recorder',
-    use_container_width=True,
-    language='vi-VN' # Cố định ngôn ngữ
+    use_container_width=True
 )
 
 # Xử lý khi có dữ liệu âm thanh
@@ -44,7 +43,7 @@ if audio:
                 audio_data = r.record(source)
             
             # Gửi lên Google Speech Recognition API để chuyển thành văn bản
-            # Cố định ngôn ngữ tiếng Việt (vi-VN)
+            # Cố định ngôn ngữ tiếng Việt (vi-VN) ở ĐÂY là chính xác
             spoken_text = r.recognize_google(audio_data, language='vi-VN')
             st.success(f"🤖 Google nghe được: **{spoken_text}**")
             
@@ -61,7 +60,6 @@ st.markdown("---")
 # --- PHẦN 2: LOGIC TÌM KIẾM ẢNH ---
 
 # Ô nhập liệu tìm kiếm (sẽ tự điền nếu có giọng nói)
-# Nếu spoken_text có giá trị, nó sẽ được dùng làm giá trị mặc định cho ô input
 search_query = st.text_input("Gõ tên sản phẩm:", value=spoken_text, placeholder="Ví dụ: áo thun đen...")
 
 # Hàm tìm TẤT CẢ ảnh khớp từ khóa trong thư mục
