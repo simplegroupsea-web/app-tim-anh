@@ -6,12 +6,17 @@ from PIL import Image
 st.set_page_config(page_title="Tra cứu Ảnh Sản Phẩm", page_icon="👗", layout="centered")
 
 st.title("👗 Tìm Kiếm Ảnh Thời Trang")
+
+# Markdown hướng dẫn người dùng bấm vào micro trên bàn phím
 st.markdown("Nhập tên sản phẩm hoặc **bấm biểu tượng Micro trên bàn phím điện thoại** để nói.")
 
-# Ô nhập liệu tìm kiếm
+# Khung hướng dẫn chi tiết dành riêng cho điện thoại Samsung
+st.info("📱 **Mẹo cho người dùng điện thoại Samsung:**\n\nNếu app không nhận diện được Tiếng Việt, với điện thoại Samsung tìm mục: **Bàn Phím Samsung** (thường là biểu tượng bánh răng ⚙️ trên bàn phím luôn) ➔ chọn mục **'Nhập bằng giọng nói'** ➔ chọn mục **'Nhập bằng giọng nói của Google'**.")
+
+# Ô nhập liệu tìm kiếm (Text Input)
 search_query = st.text_input("Gõ tên sản phẩm:", placeholder="Ví dụ: áo thun đen...")
 
-# Hàm tìm TẤT CẢ ảnh khớp từ khóa trong thư mục
+# Hàm tìm TẤT CẢ ảnh khớp từ khóa trong thư mục images
 def find_all_product_images(query):
     image_folder = "images"
     if not os.path.exists(image_folder):
@@ -20,9 +25,13 @@ def find_all_product_images(query):
     matched_images = []
     # Quét tất cả file trong thư mục images
     for filename in os.listdir(image_folder):
+        # Chuyển tên file về chữ thường để so sánh
         name_without_ext = os.path.splitext(filename)[0].lower()
-        # Nếu từ khóa có nằm trong tên file ảnh thì gom lại
-        if query.lower().strip() in name_without_ext.replace("_", " "):
+        # Chuyển đổi dấu gạch ngang/gạch dưới thành khoảng trắng trong tên file để dễ khớp
+        normalized_filename = name_without_ext.replace("_", " ").replace("-", " ")
+        
+        # Nếu từ khóa có nằm trong tên file ảnh
+        if query.lower().strip() in normalized_filename:
             matched_images.append(os.path.join(image_folder, filename))
             
     return matched_images
@@ -38,9 +47,10 @@ if search_query:
         cols = st.columns(2)
         
         for i, path in enumerate(image_paths):
+            # Mở và hiển thị ảnh
             img = Image.open(path)
             # Hiển thị ảnh luân phiên vào cột trái/phải
             with cols[i % 2]:
                 st.image(img, use_container_width=True) 
     else:
-        st.error("Không tìm thấy ảnh sản phẩm này trong kho. Vui lòng thử từ khóa khác!")
+        st.error(f"Không tìm thấy ảnh sản phẩm cho từ khóa: **{search_query}**. Vui lòng thử từ khóa khác!")
