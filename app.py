@@ -2,7 +2,7 @@ import streamlit as st
 import os
 from PIL import Image
 
-# Cấu hình giao diện trên điện thoại (Đã đổi icon áo thun và tên tab)
+# Cấu hình giao diện trên điện thoại
 st.set_page_config(page_title="Tra cứu Ảnh Phong Boutique", page_icon="👕", layout="centered")
 
 # Đổi tiêu đề chính của app
@@ -17,23 +17,25 @@ st.info("📱 **Mẹo cho người dùng điện thoại Samsung:**\n\nNếu app
 # Ô nhập liệu tìm kiếm (Text Input)
 search_query = st.text_input("Gõ tên sản phẩm:", placeholder="Ví dụ: áo thun đen...")
 
-# Hàm tìm TẤT CẢ ảnh khớp từ khóa trong thư mục images
+# Hàm tìm TẤT CẢ ảnh khớp từ khóa ngay tại thư mục gốc
 def find_all_product_images(query):
-    image_folder = "images"
+    image_folder = "."
     if not os.path.exists(image_folder):
         return []
     
     matched_images = []
-    # Quét tất cả file trong thư mục images
+    # Quét tất cả file trong thư mục gốc
     for filename in os.listdir(image_folder):
-        # Chuyển tên file về chữ thường để so sánh
-        name_without_ext = os.path.splitext(filename)[0].lower()
-        # Chuyển đổi dấu gạch ngang/gạch dưới thành khoảng trắng trong tên file để dễ khớp
-        normalized_filename = name_without_ext.replace("_", " ").replace("-", " ")
-        
-        # Nếu từ khóa có nằm trong tên file ảnh
-        if query.lower().strip() in normalized_filename:
-            matched_images.append(os.path.join(image_folder, filename))
+        # Chỉ lấy các file ảnh, bỏ qua các file như app.py hay requirements.txt
+        if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')):
+            # Chuyển tên file về chữ thường để so sánh
+            name_without_ext = os.path.splitext(filename)[0].lower()
+            # Chuyển đổi dấu gạch ngang/gạch dưới thành khoảng trắng
+            normalized_filename = name_without_ext.replace("_", " ").replace("-", " ")
+            
+            # Nếu từ khóa có nằm trong tên file ảnh
+            if query.lower().strip() in normalized_filename:
+                matched_images.append(os.path.join(image_folder, filename))
             
     return matched_images
 
